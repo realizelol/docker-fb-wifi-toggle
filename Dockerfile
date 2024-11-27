@@ -43,5 +43,5 @@ CMD sed -i "s/:80/:${APACHE_HTTP_PORT:-8080}/g" /etc/apache2/sites-{available,en
 EXPOSE 8080/tcp 8443/tcp
 
 # Start apache2
-USER www-data
+USER root
 CMD ["docker-php-entrypoint", "apache2-foreground"]
