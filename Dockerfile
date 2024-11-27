@@ -4,12 +4,11 @@ FROM php:apache
 COPY rootfs /
 
 # Update
+ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get \
-   -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-   dist-upgrade -y \
- && apt autoremove --purge -y \
- && apt autoclean \
+ && apt-get dist-upgrade -y \
+ && apt-get autoremove --purge -y \
+ && apt-get autoclean \
  && docker-php-ext-configure curl \
  && docker-php-ext-install curl \
  && docker-php-ext-enable curl
