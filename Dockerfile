@@ -17,6 +17,6 @@ RUN apt-get update \
 # Healthcheck
 # HEALTHCHECK CMD curl --fail http://localhost/index.php || exit 1
 
-EXPOSE ["8080", "8443"]
+EXPOSE 8080/tcp 8443/tcp
 CMD ["/init"]
 ENTRYPOINT ["/bin/sh"]
