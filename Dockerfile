@@ -16,6 +16,7 @@ RUN apt-get update \
 
 # copy fileystem files into place
 COPY rootfs /
+COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chown -R www-data:www-data /var/www/html
 
 # Healthcheck
@@ -24,4 +25,4 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 8080/tcp 8443/tcp
 
 # Start apache2
-CMD ["docker-entrypoint.sh"]
+CMD ["docker-entrypoint"]
