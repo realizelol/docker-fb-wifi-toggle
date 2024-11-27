@@ -1,0 +1,17 @@
+services:
+  fb-wifi-toggle:
+    image: realizelol/fb-wifi-toggle
+    container_name: fb-wifi-toggle
+    restart: unless-stopped
+    ports:
+      - "49000:49000"
+      - "49443:49443"
+    #volumes:
+    #  - ./FB_Credentials:/root/FB_Credentials
+    environment:
+      FRITZBOX_HOST: "192.168.178.1"
+      FRITZBOX_PORT: "49443"
+      FRITZBOX_PROT: "https"
+      FRITZBOX_USER: "username"
+      FRITZBOX_PASS: "password"
+      FRITZBOX_WLAN: "3"
