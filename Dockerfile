@@ -24,4 +24,4 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 8080/tcp 8443/tcp
 
 # Start apache2
-CMD ["apache2-foreground"]
+CMD ["docker-entrypoint.sh"]
