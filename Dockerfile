@@ -12,6 +12,8 @@ ENV FRITZBOX_PROT http
 ENV FRITZBOX_USER admin
 ENV FRITZBOX_PASS SecurePa$$
 ENV FRITZBOX_WLAN 3
+ENV APACHE_HTTPS_PORT 8443
+ENV APACHE_HTTP_PORT 8080
 
 # Update
 ENV DEBIAN_FRONTEND=noninteractive
@@ -30,10 +32,10 @@ RUN chown -R www-data:www-data /var/www/html
 # HEALTHCHECK CMD curl --fail http://localhost/index.php || exit 1
 
 # Modify Ports
-CMD sed -i "s/Listen 443/Listen ${FRITZBOX_PORT:-8443}/g" /etc/apache2/ports.conf
-CMD sed -i "s/:443/:${FRITZBOX_PORT:-8443}/g" /etc/apache2/sites-{available,enabled}/*
-CMD sed -i "s/Listen 80/Listen ${FRITZBOX_PORT:-8080}/g" /etc/apache2/ports.conf
-CMD sed -i "s/:80/:${FRITZBOX_PORT:-8080}/g" /etc/apache2/sites-{available,enabled}/*
+CMD sed -i "s/Listen 443/Listen ${APACHE_HTTPS_PORT:-8443}/g" /etc/apache2/ports.conf
+CMD sed -i "s/:443/:${APACHE_HTTPS_PORT:-8443}/g" /etc/apache2/sites-{available,enabled}/*
+CMD sed -i "s/Listen 80/Listen ${APACHE_HTTP_PORT:-8080}/g" /etc/apache2/ports.conf
+CMD sed -i "s/:80/:${APACHE_HTTP_PORT:-8080}/g" /etc/apache2/sites-{available,enabled}/*
 EXPOSE 8080/tcp 8443/tcp
 
 # Start apache2
