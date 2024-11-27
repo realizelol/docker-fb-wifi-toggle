@@ -17,6 +17,7 @@ RUN apt-get update \
 # copy fileystem files into place
 COPY rootfs /
 COPY docker-entrypoint /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
 RUN chown -R www-data:www-data /var/www/html
 
 # Healthcheck
