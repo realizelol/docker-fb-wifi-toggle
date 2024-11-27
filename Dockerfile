@@ -14,6 +14,10 @@ ENV FRITZBOX_PASS SecurePa$$
 ENV FRITZBOX_WLAN 3
 ENV APACHE_HTTPS_PORT 8443
 ENV APACHE_HTTP_PORT 8080
+ARG ARG_APACHE_LISTEN_PORT=8080
+ENV APACHE_LISTEN_PORT=${ARG_APACHE_LISTEN_PORT}
+
+RUN sed -s -i -e "s/80/${APACHE_LISTEN_PORT}/" /etc/apache2/ports.conf /etc/apache2/sites-available/*.conf
 
 # Update
 ENV DEBIAN_FRONTEND=noninteractive
@@ -39,4 +43,5 @@ CMD sed -i "s/:80/:${APACHE_HTTP_PORT:-8080}/g" /etc/apache2/sites-{available,en
 EXPOSE 8080/tcp 8443/tcp
 
 # Start apache2
+USER www-data
 CMD ["docker-php-entrypoint", "apache2-foreground"]
