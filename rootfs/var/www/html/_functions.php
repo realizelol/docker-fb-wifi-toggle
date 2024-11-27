@@ -74,4 +74,5 @@ class fritzbox {
       return result;
     }
   }
+}
 ?>
