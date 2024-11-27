@@ -6,12 +6,9 @@ COPY rootfs /
 # Update
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
- && apt install curl libcurl -y \
  && apt-get dist-upgrade -y \
  && apt-get autoremove --purge -y \
  && apt-get autoclean
-RUN docker-php-ext-install curl \
- && docker-php-ext-enable curl
 
 # Healthcheck
 # HEALTHCHECK CMD curl --fail http://localhost/index.php || exit 1
