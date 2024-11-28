@@ -62,7 +62,7 @@ EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 RUN if [ "${APACHE_SSL_ENABLE}" = "true" ]; then \
       sed -sie "s/SSLCertificateFile.*/${APACHE_SSL_CERTFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
       sed -sie "s/SSLCertificateKeyFile.*/${APACHE_SSL_KEYFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
-      a2ensite default-ssl
+      a2ensite default-ssl; \
     fi
 
 # Healthcheck
