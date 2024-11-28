@@ -9,9 +9,9 @@ DEBIAN_FRONTEND=noninteractive apt-get update \
 
 # SSL active [APACHE_SSL_ENABLE = true] ?!
 if [ "${APACHE_SSL_ENABLE}" = "true" ]; then
-  sed -i "s/SSLCertificateFile.*/SSLCertificateFile {APACHE_SSL_CERTFILE}/g" \
+  sed -sie "s/SSLCertificateFile.*/SSLCertificateFile ${APACHE_SSL_CERTFILE}/g" \
     "${APACHE_CONFDIR}/sites-available/default-ssl.conf"
-  sed -i "s/SSLCertificateKeyFile.*/SSLCertificateKeyFile ${APACHE_SSL_KEYFILE}/g" \
+  sed -sie "s/SSLCertificateKeyFile.*/SSLCertificateKeyFile ${APACHE_SSL_KEYFILE}/g" \
     "${APACHE_CONFDIR}/sites-available/default-ssl.conf"
   a2enmod ssl
   a2ensite default-ssl

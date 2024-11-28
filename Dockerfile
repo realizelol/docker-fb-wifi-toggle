@@ -47,19 +47,19 @@ RUN set -eux; \
   a2enconf headers
 
 # Reduce the Server header to just "Apache" and remove the server signature on error pages.
-RUN sed -ie "s/^ServerTokens.*/ServerTokens Prod/g" "${APACHE_CONFDIR}/conf-available/security.conf"
-RUN sed -ie "s/^nServerSignature.*/ServerSignature Off/g" "${APACHE_CONFDIR}/conf-available/security.conf"
+RUN sed -sie "s/^ServerTokens.*/ServerTokens Prod/g" "${APACHE_CONFDIR}/conf-available/security.conf"
+RUN sed -sie "s/^ServerSignature.*/ServerSignature Off/g" "${APACHE_CONFDIR}/conf-available/security.conf"
 
 # Stop sending X-Powered-By.
 RUN echo -e 'expose_php=Off;' > /usr/local/etc/php/conf.d/no-expose.ini
 
 # Modify Ports
-RUN sed -ie "s/Listen 80/Listen ${APACHE_HTTP_PORT}/g" /etc/apache2/ports.conf
-RUN sed -ie "s/Listen 443/Listen ${APACHE_HTTPS_PORT}/g" /etc/apache2/ports.conf
+RUN sed -sie "s/Listen 80/Listen ${APACHE_HTTP_PORT}/g" /etc/apache2/ports.conf
+RUN sed -sie "s/Listen 443/Listen ${APACHE_HTTPS_PORT}/g" /etc/apache2/ports.conf
 RUN find /etc/apache2 -type f -regex ".*\/sites-\(available\|enabled\)\/.*" -exec \
-      sed -ie "s/:80/:${APACHE_HTTP_PORT}/g" {} \;
+      sed -sie "s/:80/:${APACHE_HTTP_PORT}/g" {} \;
 RUN find /etc/apache2 -type f -regex ".*\/sites-\(available\|enabled\)\/.*" -exec \
-      sed -ie "s/:443/:${APACHE_HTTPS_PORT}/g" {} \;
+      sed -sie "s/:443/:${APACHE_HTTPS_PORT}/g" {} \;
 EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 
 # Healthcheck
