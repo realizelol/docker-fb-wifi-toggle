@@ -54,8 +54,12 @@ RUN sed -sie "s/^nServerSignature.*/ServerSignature Off/g" "${APACHE_CONFDIR}/co
 RUN echo -e 'expose_php=Off;' > /usr/local/etc/php/conf.d/no-expose.ini
 
 # Modify Ports
-RUN sed -sie "s/80/${APACHE_HTTP_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-{available,enabled}/*.conf
-RUN sed -sie "s/443/${APACHE_HTTPS_PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-{available,enabled}/*.conf
+RUN sed -sie "s/80/${APACHE_HTTP_PORT}/g" /etc/apache2/ports.conf
+RUN sed -sie "s/443/${APACHE_HTTPS_PORT}/g" /etc/apache2/ports.conf
+RUN find /etc/apache2 -type f,l -iregex ".*\/sites-\(available\|enabled\)\/.*" -exec \
+      sed -sie "s/80/${APACHE_HTTP_PORT}/g" {} \;
+RUN find /etc/apache2 -type f,l -iregex ".*\/sites-\(available\|enabled\)\/.*" -exec \
+      sed -sie "s/443/${APACHE_HTTPS_PORT}/g" {} \;
 EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 
 # SSL ?!
