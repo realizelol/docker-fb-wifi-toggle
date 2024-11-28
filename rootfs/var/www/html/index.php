@@ -23,16 +23,21 @@
 <?php
 require_once '_functions.php';
 
-if (isset($_GET['action'])) {
+if (isset($_POST['action'])) {
   $f = new fritzbox();
-  if($_GET['action'] == "enable") {
+  if (isset($_POST['enable'])) {
     $output = $f->send("$fb_host", "$fb_port", "$fb_prot", "$fb_user", "$fb_pass", "$fb_wlan", "guest_enable");
   }
-  if($_GET['action'] == "disable") {
+  if (isset($_POST['disable'])) {
     $output = $f->send("$fb_host", "$fb_port", "$fb_prot", "$fb_user", "$fb_pass", "$fb_wlan", "guest_disable");
   }
-  if($_GET['action'] == "status") {
+  if (isset($_POST['status'])) {
     $output = $f->send("$fb_host", "$fb_port", "$fb_prot", "$fb_user", "$fb_pass", "$fb_wlan", "guest_status");
+    if (str_contains($output, '0')) {
+      $output = 'Guest WiFi is OFF';
+    } elseif (str_contains($output, '1')) {
+      $output = 'Guest WiFi is ON';
+    }
   }
 
   $refreshtime = 3;
@@ -42,31 +47,19 @@ if (isset($_GET['action'])) {
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="fb.css">
-      <style>
-        html, body {
-          font-family: Arial, Helvetica, sans-serif;
-          font-size: 14px;
-          color: #EFEFEF;
-        }
-        tr, td {
-          font-family: Arial, Helvetica, sans-serif;
-          font-size: 14px;
-          color: #EFEFEF;
-        }
-      </style>
       <meta http-equiv="refresh" content="'.$refreshtime.';url='.$_SERVER['PHP_SELF'].'">
     </head>
     <body>';
 
-  if (isset($output) AND !empty($output) AND (count($output) > 1)) {
-    print_r("<table width='360px'>\n".$output."</table>\n");
+  if (isset($output)) {
+    echo '<div class="centered"><h1 style="color: #EFEFEF !important;">'.$output.'</h1></div>';
   }
 
   // HTML - Footer
   echo "</body>\n</html>";
 
 }
-elseif (!isset($_GET['action']) OR !isset($output)) {
+elseif (!isset($_POST['action']) OR !isset($output)) {
 ?>
 
     <div class="centered">
@@ -82,7 +75,7 @@ elseif (!isset($_GET['action']) OR !isset($output)) {
     </div>
 
 <?php
-} else { print_r("ERROR!"); }
+} else { print_r("Unknown ERROR!"); }
 ?>
 
 </body>
