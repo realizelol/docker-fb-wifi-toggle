@@ -16,8 +16,8 @@ ENV FRITZBOX_WLAN=3
 ENV APACHE_HTTP_PORT=8080
 ENV APACHE_HTTPS_PORT=8443
 ENV APACHE_SSL_ENABLE=false
-ENV APACHE_SSL_KEYFILE=/etc/ssl/certs/key.pem
-ENV APACHE_SSL_CERTFILE=/etc/ssl/certs/certificate.pem
+ENV APACHE_SSL_KEYFILE=/etc/ssl/private/key.pem
+ENV APACHE_SSL_CERTFILE=/etc/ssl/private/certificate.pem
 
 # Update system environment
 ENV DEBIAN_FRONTEND=noninteractive
@@ -29,7 +29,7 @@ RUN apt-get update \
 # copy fileystem files into place and set permissions
 COPY rootfs /
 RUN  chown -R "${APACHE_RUN_USER}":"${APACHE_RUN_GROUP}" "/var/www/html" \
-       "${APACHE_LOG_DIR}" "${APACHE_LOCK_DIR}"
+              "${APACHE_LOG_DIR}" "${APACHE_LOCK_DIR}"
 # copy entrypoint file and set execute permission
 COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
@@ -65,7 +65,7 @@ EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 # Healthcheck
 # HEALTHCHECK CMD curl --fail http://localhost/index.php || exit 1
 
-# Start apache2 with root privileges
+# Start apache2 via docker-entrypoint with root privileges
 USER root
 ENTRYPOINT ["/bin/bash"]
 CMD ["docker-entrypoint"]
