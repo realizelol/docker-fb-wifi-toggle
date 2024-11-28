@@ -62,13 +62,6 @@ RUN find /etc/apache2 -type f -regex ".*\/sites-\(available\|enabled\)\/.*" -exe
       sed -sie "s/:443/:${APACHE_HTTPS_PORT}/g" {} \;
 EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 
-# SSL ?!
-RUN if [ "${APACHE_SSL_ENABLE}" = "true" ]; then \
-      sed -sie "s/SSLCertificateFile.*/${APACHE_SSL_CERTFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
-      sed -sie "s/SSLCertificateKeyFile.*/${APACHE_SSL_KEYFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
-      a2enmod ssl; a2ensite default-ssl; \
-    fi
-
 # Healthcheck
 # HEALTHCHECK CMD curl --fail http://localhost/index.php || exit 1
 
