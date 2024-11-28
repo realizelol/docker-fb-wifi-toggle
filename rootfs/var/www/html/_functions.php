@@ -25,9 +25,9 @@ class fritzbox {
     if ($fb_host === null || $fb_user === null || $fb_pass === null || $fb_data === null)
       return false;
     if ($fb_port === null)
-      $this->port = 49000;
+      $this->port = 49443;
     if ($fb_prot === null)
-      $this->prot = "http";
+      $this->prot = "https";
     if ($fb_wlan === null)
       $this->wlan = 3;
     $this->host = $fb_host;
@@ -43,6 +43,8 @@ class fritzbox {
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $fullurl);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -82,7 +84,7 @@ class fritzbox {
       preg_match("/(?<=<NewEnable>)[0-1]?(?=<\/NewEnable>)/", $result, $result);
       $result = $result[0];
     } elseif (str_contains($result, 'SetEnableResponse')) {
-      $result = 'successfully send.';
+      $result = 'successfully sent.';
     } else {
       $result = 'error sending.';
     }

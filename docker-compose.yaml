@@ -4,10 +4,12 @@ services:
     container_name: fb-wifi-toggle
     restart: unless-stopped
     ports:
-      - "49000:49000"
-      - "49443:49443"
+      - "8080:8080"
+      - "8443:8443"
     #volumes:
     #  - ./FB_Credentials:/root/FB_Credentials
+    #  - /etc/ssl/certs/key.pem:/etc/ssl/certs/key.pem
+    #  - /etc/ssl/certs/certificate.pem:/etc/ssl/certs/certificate.pem
     environment:
       FRITZBOX_HOST: "192.168.178.1"
       FRITZBOX_PORT: "49443"
@@ -15,3 +17,8 @@ services:
       FRITZBOX_USER: "username"
       FRITZBOX_PASS: "password"
       FRITZBOX_WLAN: "3"
+      APACHE_HTTP_PORT: "8080"
+      APACHE_HTTPS_PORT: "8443"
+      APACHE_ENABLE_SSL: false
+      APACHE_SSL_KEYFILE: "/etc/ssl/certs/key.pem"
+      APACHE_SSL_CERTFILE: "/etc/ssl/certs/certificate.pem"
