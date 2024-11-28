@@ -1,23 +1,23 @@
 FROM php:apache
 
 # Manually set up the apache environment variables
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_CONFDIR /etc/apache2
-ENV APACHE_LOG_DIR /var/log/apache2
-ENV APACHE_LOCK_DIR /var/lock/apache2
-ENV APACHE_PID_FILE /var/run/apache2.pid
-ENV FRITZBOX_HOST 192.168.178.1
-ENV FRITZBOX_PORT 49443
-ENV FRITZBOX_PROT https
-ENV FRITZBOX_USER dslf-config
-ENV FRITZBOX_PASS S3cure-Pa55
-ENV FRITZBOX_WLAN 3
-ENV APACHE_HTTP_PORT 8080
-ENV APACHE_HTTPS_PORT 8443
-ENV APACHE_SSL_ENABLE false
-ENV APACHE_SSL_KEYFILE /etc/ssl/certs/key.pem
-ENV APACHE_SSL_CERTFILE /etc/ssl/certs/certificate.pem
+ENV APACHE_RUN_USER=www-data
+ENV APACHE_RUN_GROUP=www-data
+ENV APACHE_CONFDIR=/etc/apache2
+ENV APACHE_LOG_DIR=/var/log/apache2
+ENV APACHE_LOCK_DIR=/var/lock/apache2
+ENV APACHE_PID_FILE=/var/run/apache2.pid
+ENV FRITZBOX_HOST=192.168.178.1
+ENV FRITZBOX_PORT=49443
+ENV FRITZBOX_PROT=https
+ENV FRITZBOX_USER=dslf-config
+ENV FRITZBOX_PASS=S3cure-Pa55
+ENV FRITZBOX_WLAN=3
+ENV APACHE_HTTP_PORT=8080
+ENV APACHE_HTTPS_PORT=8443
+ENV APACHE_SSL_ENABLE=false
+ENV APACHE_SSL_KEYFILE=/etc/ssl/certs/key.pem
+ENV APACHE_SSL_CERTFILE=/etc/ssl/certs/certificate.pem
 
 # Update system environment
 ENV DEBIAN_FRONTEND=noninteractive
@@ -66,7 +66,7 @@ EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 RUN if [ "${APACHE_SSL_ENABLE}" = "true" ]; then \
       sed -sie "s/SSLCertificateFile.*/${APACHE_SSL_CERTFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
       sed -sie "s/SSLCertificateKeyFile.*/${APACHE_SSL_KEYFILE}/g" "${APACHE_CONFDIR}/sites-available/default-ssl.conf"; \
-      a2ensite default-ssl; \
+      a2enmod ssl; a2ensite default-ssl; \
     fi
 
 # Healthcheck
