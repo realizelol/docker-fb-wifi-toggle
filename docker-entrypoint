@@ -12,9 +12,9 @@ mkdir -p /etc/ssl/certs >/dev/null
 
 # SSL active [APACHE_SSL_ENABLE = true] ?!
 if [ "${APACHE_SSL_ENABLE}" = "true" ]; then
-  sed -sie "s/SSLCertificateFile.*/SSLCertificateFile ${APACHE_SSL_CERTFILE}/g" \
+  sed -sie "s|SSLCertificateFile.*|SSLCertificateFile ${APACHE_SSL_CERTFILE}|g" \
     "/etc/apache2/sites-available/default-ssl.conf"
-  sed -sie "s/SSLCertificateKeyFile.*/SSLCertificateKeyFile ${APACHE_SSL_KEYFILE}/g" \
+  sed -sie "s|SSLCertificateKeyFile.*|SSLCertificateKeyFile ${APACHE_SSL_KEYFILE}|g" \
     "/etc/apache2/sites-available/default-ssl.conf"
   a2enmod ssl
   a2ensite default-ssl
