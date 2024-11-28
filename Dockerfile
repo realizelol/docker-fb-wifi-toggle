@@ -29,7 +29,7 @@ RUN apt-get update \
 # copy fileystem files into place and set permissions
 COPY rootfs /
 RUN  chown -R "${APACHE_RUN_USER}":"${APACHE_RUN_GROUP}" "/var/www/html" \
-       "${APACHE_LOG_DIR}" "${APACHE_LOCK_DIR}" "${APACHE_PID_FILE}"
+       "${APACHE_LOG_DIR}" "${APACHE_LOCK_DIR}"
 # copy entrypoint file and set execute permission
 COPY docker-entrypoint /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
