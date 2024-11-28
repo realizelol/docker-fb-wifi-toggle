@@ -56,9 +56,9 @@ RUN echo -e 'expose_php=Off;' > /usr/local/etc/php/conf.d/no-expose.ini
 # Modify Ports
 RUN sed -sie "s/Listen 80/Listen ${APACHE_HTTP_PORT}/g" /etc/apache2/ports.conf
 RUN sed -sie "s/Listen 443/Listen ${APACHE_HTTPS_PORT}/g" /etc/apache2/ports.conf
-RUN find /etc/apache2 -type f,l -iregex ".*\/sites-\(available\|enabled\)\/.*" -exec \
+RUN find /etc/apache2 -type f -regex ".*\/sites-\(available\|enabled\)\/.*" -exec \
       sed -sie "s/:80/:${APACHE_HTTP_PORT}/g" {} \;
-RUN find /etc/apache2 -type f,l -iregex ".*\/sites-\(available\|enabled\)\/.*" -exec \
+RUN find /etc/apache2 -type f -regex ".*\/sites-\(available\|enabled\)\/.*" -exec \
       sed -sie "s/:443/:${APACHE_HTTPS_PORT}/g" {} \;
 EXPOSE "${APACHE_HTTP_PORT}/tcp" "${APACHE_HTTPS_PORT}/tcp"
 
